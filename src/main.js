@@ -97,6 +97,7 @@ function update() {
   idle = false;
 
   updateParticles();
+  fadeTrajectories();
 
   if (state === 'start-game') {
     init();
@@ -292,7 +293,6 @@ function update() {
       if (!players[i].dead) {currentPlayer = i; break}
     }
 
-    fadeTrajectories();
     state = 'start-turn';
   }
 
