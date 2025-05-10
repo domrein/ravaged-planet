@@ -93,11 +93,11 @@ function initLevel() {
   generateTerrain(terrain);
 }
 
-function update() {
+function update(dt) {
   idle = false;
 
-  updateParticles();
-  fadeTrajectories();
+  updateParticles(dt);
+  fadeTrajectories(dt);
 
   if (state === 'start-game') {
     init();
@@ -325,7 +325,7 @@ export function createParticles(x, y, p, c) {
   }
 }
 
-function updateParticles() {
+function updateParticles(dt) {
   for (let i=particles.length-1; i>=0; i--) {
     const particle = particles[i];
 
@@ -460,11 +460,11 @@ function drawTrajectories() {
   traces.globalAlpha = 1;
 }
 
-function fadeTrajectories() {
+function fadeTrajectories(dt) {
   for (let i=trajectories.length-1; i>=0; i--) {
     const trajectory = trajectories[i];
-    trajectory.a -= TRAJECTORY_FADE_SPEED;
-    trajectory.y -= TRAJECTORY_FLOAT_SPEED;
+    trajectory.a -= TRAJECTORY_FADE_SPEED * dt / 1000;
+    trajectory.y -= TRAJECTORY_FLOAT_SPEED * dt / 1000;
     if (trajectory.a <= 0 || trajectory.y <= 0) {
       trajectories.splice(i, 1);
     }
@@ -521,7 +521,7 @@ function drawStatus() {
   drawText(foreground, `WIND: ${wind<=0?'<':''}${Math.abs(wind)}${wind>=0?'>':''}`, W-8, 8, 'white', 'right');
 }
 
-loop(() => {
-  update();
+loop((dt) => {
+  update(dt);
   draw();
 });

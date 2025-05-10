@@ -163,8 +163,12 @@ export function drawParagraph(ctx, text, x, y, w, h, color) {
 }
 
 export function loop(fn) {
+  let ct = Date.now();
   (function looped() {
-    fn();
+    let now = Date.now();
+    let dt = now - ct;
+    ct = now;
+    fn(dt);
     requestAnimationFrame(looped);
   })();
 }
